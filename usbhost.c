@@ -9,7 +9,6 @@
 #include "usbhost.h"
 #include "menu.h"
 #include "data.h"
-#include "util.h"
 
 #include "keyboardled.h"
 #include "parsedescriptor.h"
