@@ -5,7 +5,6 @@
 #include "mcu.h"
 #include "system.h"
 #include "gpio.h"
-#include "uart.h"
 #include "timer2.h"
 
 #include "usbhost.h"
@@ -80,10 +79,6 @@ void InitSystem(void)
 	InitRecvBuffer();
 	
 	InitTimer2();
-
-#if !defined(BOARD_MICRO)
-	InitUART0();
-#endif
 
 	InitUsbData();
 	InitUsbHost();

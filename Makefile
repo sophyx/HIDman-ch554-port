@@ -1,5 +1,5 @@
-BOARD_TYPE = BOARD_AXP
-#BOARD_TYPE = BOARD_MINI
+#BOARD_TYPE = BOARD_AXP
+BOARD_TYPE = BOARD_MINI
 #BOARD_TYPE = BOARD_MICRO
 
 BOARD_OPTIONS = OPT_DEFAULT
@@ -30,11 +30,6 @@ $(OBJDIR)/ps2.rel \
 $(OBJDIR)/andyalloc.rel \
 $(OBJDIR)/pwm.rel \
 $(OBJDIR)/mouse.rel
-
-ifneq ($(BOARD_TYPE), BOARD_MICRO)
-  OBJECTS += $(OBJDIR)/uart.rel
-	OBJECTS += $(OBJDIR)/uart1.rel
-endif
 
 ifndef FREQ_SYS
 FREQ_SYS = 24000000

@@ -4,7 +4,6 @@
 #include <string.h>
 #include "ch554.h"
 #include "usbhost.h"
-#include "uart.h"
 #include "ps2protocol.h"
 #include "ps2.h"
 #include "parsedescriptor.h"
