@@ -15,23 +15,10 @@
 #include "data.h"
 #include "ps2protocol.h"
 
-#if defined(BOARD_MICRO)        // Pinouts for HIDman-micro
-	SBIT(KEY_CLOCK, 0x90, 7);
-	#if defined(OPT_SWAP_KBD_MSC) // Makes it easier to direct solder combo PS/2 port
-		SBIT(KEY_DATA, 0x90, 6);
-		SBIT(MOUSE_CLOCK, 0x90, 4);
-	#else
-		SBIT(KEY_DATA, 0x90, 4);
-		SBIT(MOUSE_CLOCK, 0x90, 6);
-	#endif
-	SBIT(MOUSE_DATA, 0x90, 5);
-#else                           // Default pinouts (HIDman-AXD, HIDman-mini)
-	SBIT(KEY_CLOCK, 0x80, 5);
-	SBIT(KEY_DATA, 0x80, 3);
 
-	SBIT(MOUSE_CLOCK, 0xB0, 7);
-	SBIT(MOUSE_DATA, 0xC1, 3);
-#endif
+SBIT(KEY_CLOCK, 0x90, 5);
+SBIT(KEY_DATA, 0x90, 3);
+
 
 __xdata ps2port ports[] = {
 	// keyboard
@@ -81,16 +68,12 @@ bool ReadPS2Clock(uint8_t port)
 {
 	if (port == PORT_KEY)
 		return KEY_CLOCK;
-	else /*if (port == PORT_MOUSE)*/
-		return MOUSE_CLOCK;
 }
 
 bool ReadPS2Data(uint8_t port)
 {
 	if (port == PORT_KEY)
 		return KEY_DATA;
-	else /*if (port == PORT_MOUSE)*/
-		return MOUSE_DATA;
 }
 
 void SimonSaysSendKeyboard(const uint8_t *chunk)

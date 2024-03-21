@@ -114,20 +114,8 @@ void PS2ProcessPort(uint8_t port);
 
 #define WritePS2Clock(port, val)    \
 	if (port == PORT_KEY)        \
-			KEY_CLOCK = val;         \
-	else if (port == PORT_MOUSE) \
-			MOUSE_CLOCK = val;
+			KEY_CLOCK = val;
 
-#if defined(BOARD_MICRO)
-
-#define WritePS2Data(port, val)     \
-	if (port == PORT_KEY)        \
-			KEY_DATA = val;          \
-	else if (port == PORT_MOUSE) \
-			MOUSE_DATA = val;
-#else
-
-	//P4 dir should be 1 (output) when low, 0 (input) when high
 #define WritePS2Data(port, val)     \
 	if (port == PORT_KEY)        \
 		KEY_DATA = val;            \
@@ -139,7 +127,6 @@ void PS2ProcessPort(uint8_t port);
 			P4_OUT &= 0b11110111;    \
 			P4_DIR |= 0b00001000;    \
 		}
-#endif
 
 #define S_INIT 0
 #define S_IDLE 1

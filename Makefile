@@ -1,9 +1,3 @@
-#BOARD_TYPE = BOARD_AXP
-BOARD_TYPE = BOARD_MINI
-#BOARD_TYPE = BOARD_MICRO
-
-BOARD_OPTIONS = OPT_DEFAULT
-#BOARD_OPTIONS = OPT_SWAP_KBD_MSC
 
 CC = sdcc
 OBJCOPY = sdobjcopy
@@ -50,7 +44,7 @@ endif
 CFLAGS := -V -mmcs51 --model-large --stack-auto \
 	--xram-size $(XRAM_SIZE) --xram-loc $(XRAM_LOC) \
 	--code-size $(CODE_SIZE) \
-	-I/ -DFREQ_SYS=$(FREQ_SYS) -D$(BOARD_TYPE) -D$(BOARD_OPTIONS) \
+	-I/ -DFREQ_SYS=$(FREQ_SYS) \
 	$(EXTRA_FLAGS)
 
 LFLAGS := $(CFLAGS)

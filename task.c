@@ -4,7 +4,6 @@
 
 #include "mcu.h"
 #include "system.h"
-#include "gpio.h"
 #include "timer2.h"
 
 #include "usbhost.h"
@@ -66,15 +65,7 @@ static void InitTimer2(void)
 void InitSystem(void)
 {
 	CfgFsys();
-    mDelaymS(500);   
-
-    CH554GPIODrivCap(3, 1);
-
-#ifdef DEBUG
-    //CH554GPIOModeSelt(PORT_PIN_TEST_LED, 2, OFFSET_PIN_TEST_LED);
-
-    //SET_GPIO_BIT(PIN_TEST_LED);
-#endif
+    mDelaymS(500);  
 
 	InitRecvBuffer();
 	

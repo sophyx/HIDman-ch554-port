@@ -4,19 +4,14 @@
 #include <string.h>
 #include "ch554.h"
 #include "usbhost.h"
-#include "uart.h"
 #include "ps2protocol.h"
 #include "ps2.h"
 #include "parsedescriptor.h"
-#include "menu.h"
 #include "pwm.h"
 
 // Default pinouts (HIDman-AXD, HIDman-mini)
-SBIT(KEY_CLOCK, 0x80, 5);
-SBIT(KEY_DATA, 0x80, 3);
-
-SBIT(MOUSE_CLOCK, 0xB0, 7);
-SBIT(MOUSE_DATA, 0xC1, 3);
+SBIT(KEY_CLOCK, 0x90, 5);
+SBIT(KEY_DATA, 0x90, 3);
 
 __xdata uint8_t repeatDiv = 0;
 uint16_t ResetCounter;
@@ -32,7 +27,6 @@ void mTimer0Interrupt(void) __interrupt(1)
 {
 	// Reload to 60KHz
 	PS2ProcessPort(PORT_KEY);
-	PS2ProcessPort(PORT_MOUSE);
 
 	// now handle keyboard typematic repeat timers
 	// divide down to 15KHz to make maths easier
@@ -81,24 +75,10 @@ void main()
 	T3_FIFO_L = 0;
 	T3_FIFO_H = 0;
 
-	// Default pinouts (HIDman-AXD, HIDman-mini)
-	//port0 setup
-	P0_DIR = 0b11101010; // 0.3, 0.5, 0.6, 0.7 are all keyboard outputs, 0.4 is CTS (i.e. RTS on host), 0.1 is RTS (i.e. CTS on host)
-	PORT_CFG |= bP0_OC;	 // open collector
-	P0_PU = 0x00;		 // no pullups
-	P0 = 0b11111010;	 // default pin states
-
-	//port2 setup
-	P2_DIR = 0b00110000; // 2.4, 2.5 are RED/GREEN LED outputs
-	PORT_CFG |= bP2_OC;	 // open collector
-	P2_PU = 0x00;		 // no pullups
-	P2 = 0b00110000;	 // LEDs off by default (i.e. high)
-
-	//port3 setup
-	P3_DIR = 0b11100010; // 5,6,7 are PS2 outputs, 1 is UART0 TXD
-	PORT_CFG |= bP3_OC;	 // open collector
-	P3_PU = 0x00;		 // no pullups
-	P3 = 0b11100010;	 // default pin states
+	//port1 setup
+	P1_MOD_OC = 0b11101010; // set output mode for output pins to open-drain
+	P1_DIR_PU = 0x00;  // no pull-ups and the other pins input
+	P1 = 0b11111010;	 // default pin states
 
 	// timer0 setup
 	TMOD = (TMOD & 0xf0) | 0x02; // mode 1 (8bit auto reload)
