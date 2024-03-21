@@ -146,6 +146,16 @@
 #define USB_ENDP_TYPE_INTER     0x03
 #endif
 
+/* HID Protocol Codes */
+#define HID_PROTOCOL_NONE               0x00
+#define HID_PROTOCOL_KEYBOARD           0x01
+#define HID_PROTOCOL_MOUSE              0x02
+
+/* MSC Protocol Codes */
+#define MSC_PROTOCOL_CBI_INT            0x00
+#define MSC_PROTOCOL_CBI_NOINT          0x01
+#define MSC_PROTOCOL_BULK_ONLY          0x50
+
 #ifndef USB_DEVICE_ADDR
 #define	USB_DEVICE_ADDR			0x02	/* 默认的USB设备地址 */
 #endif
