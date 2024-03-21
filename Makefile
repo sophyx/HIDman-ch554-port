@@ -11,10 +11,10 @@ PACK_HEX = packihx
 WCHISP = wchisptool
 OBJDIR = ./build
 
-TARGET = hidman
+TARGET = hidman_ch554
 
 OBJECTS = \
-$(OBJDIR)/ch559.rel \
+$(OBJDIR)/ch554.rel \
 $(OBJDIR)/gpio.rel \
 $(OBJDIR)/keyboardled.rel \
 $(OBJDIR)/main.rel \
@@ -25,7 +25,6 @@ $(OBJDIR)/timer2.rel \
 $(OBJDIR)/usbhost.rel \
 $(OBJDIR)/recvbuffer.rel \
 $(OBJDIR)/data.rel \
-$(OBJDIR)/menu.rel \
 $(OBJDIR)/ps2protocol.rel \
 $(OBJDIR)/ps2.rel \
 $(OBJDIR)/util.rel \
@@ -39,19 +38,19 @@ ifneq ($(BOARD_TYPE), BOARD_MICRO)
 endif
 
 ifndef FREQ_SYS
-FREQ_SYS = 48000000
+FREQ_SYS = 24000000
 endif
 
 ifndef XRAM_SIZE
-XRAM_SIZE = 0x1600
+XRAM_SIZE = 0x0400
 endif
 
 ifndef XRAM_LOC
-XRAM_LOC = 0x0200
+XRAM_LOC = 0x0000
 endif
 
 ifndef CODE_SIZE
-CODE_SIZE = 0xEFFF
+CODE_SIZE = 0x37FF
 endif
 
 CFLAGS := -V -mmcs51 --model-large --stack-auto \

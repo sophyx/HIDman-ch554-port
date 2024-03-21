@@ -1,6 +1,6 @@
 #ifndef _PARSE_DESCRIPTOR_H_
 #define _PARSE_DEXCRIPTOR_H_
-#include "ch559.h"
+#include "ch554.h"
 #include "type.h"
 #include "usbhost.h"
 extern BOOL ParseDeviceDescriptor(USB_DEV_DESCR *pDevDescr, UINT8 len, USB_DEVICE *pUsbDevice);

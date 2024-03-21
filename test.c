@@ -1,7 +1,7 @@
 
 #include <stdio.h>
 #include <ctype.h>
-#include "ch559.h"
+#include "ch554.h"
 #include "parsedescriptor.h"
 
 #include "data.h"

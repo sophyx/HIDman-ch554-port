@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include "type.h"
 #include "usbdef.h"
-#include "ch559.h"
+#include "ch554.h"
 
 #include "defs.h"
 

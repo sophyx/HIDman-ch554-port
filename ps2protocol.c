@@ -9,15 +9,13 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
-#include "ch559.h"
+#include "ch554.h"
 #include "util.h"
 #include "usbhost.h"
 #include "uart.h"
 #include "ps2.h"
 #include "data.h"
 #include "ps2protocol.h"
-#include "menu.h"
-#include "mouse.h"
 #include "pwm.h"
 
 // repeatState -
@@ -135,22 +133,6 @@ void processSeg(HID_SEG *currSeg, HID_REPORT *report, uint8_t *data)
 					report->keyboardUpdated = 1;
 				}
 			}
-			else
-			{
-				switch (tmp)
-				{
-				case MAP_MOUSE_BUTTON1:
-					MouseSet(0, pressed);
-					break;
-				case MAP_MOUSE_BUTTON2:
-					MouseSet(1, pressed);
-					break;
-				case MAP_MOUSE_BUTTON3:
-					MouseSet(2, pressed);
-					break;
-				}
-			}
-
 			tmp++;
 		}
 	}
@@ -191,48 +173,6 @@ void processSeg(HID_SEG *currSeg, HID_REPORT *report, uint8_t *data)
 			{
 				SetKey(currSeg->OutputControl, report);
 			}
-			else
-			{
-				switch (currSeg->OutputControl)
-				{
-				case MAP_MOUSE_BUTTON1:
-					MouseSet(0, pressed);
-					break;
-				case MAP_MOUSE_BUTTON2:
-					MouseSet(1, pressed);
-					break;
-				case MAP_MOUSE_BUTTON3:
-					MouseSet(2, pressed);
-					break;
-				}
-			}
-		}
-		else if (currSeg->InputType == MAP_TYPE_SCALE)
-		{
-			if (currSeg->OutputChannel == MAP_MOUSE)
-			{
-
-				switch (currSeg->OutputControl)
-				{
-				// TODO scaling
-				case MAP_MOUSE_X:
-					/*if (currSeg->InputParam == 2)
-						currSeg->value = (uint8_t)((int8_t)((currSeg->value + 8) >> 4) - 0x08);
-					else*/
-
-					MouseMove((int8_t)currSeg->value, 0);
-
-					break;
-				case MAP_MOUSE_Y:
-					/*if (currSeg->InputParam == 2)
-						currSeg->value = (uint8_t)(-((int8_t)((currSeg->value + 8) >> 4) - 0x08));
-					else*/
-
-					MouseMove(0, (int8_t)currSeg->value);
-
-					break;
-				}
-			}
 		}
 		else if (currSeg->InputType == MAP_TYPE_ARRAY)
 		{
@@ -259,25 +199,17 @@ bool ParseReport(HID_REPORT_DESC *desc, uint32_t len, uint8_t *report)
 	HID_SEG *currSeg;
 
 	uint32_t tmp;
-
-	// Light RED LED for a while
-#if defined(BOARD_MICRO)
-	P2 &= ~0b00100000;
-#else
 	SetPWM1Dat(0x00);
 	SetPWM2Dat(0x00);
 	T3_FIFO_L = 0;
 	T3_FIFO_H = 0;
-#endif
+
 	LEDDelay = 250;
 
-	if (desc->usesReports)
-	{
+	if (desc->usesReports) {
 		// first byte of report will be the report number
 		descReport = desc->reports[report[0]];
-	}
-	else
-	{
+	} else {
 		descReport = desc->reports[0];
 	}
 
@@ -294,62 +226,41 @@ bool ParseReport(HID_REPORT_DESC *desc, uint32_t len, uint8_t *report)
 	memset(descReport->KeyboardKeyMap, 0, 32);
 
 	// TODO handle segs that are bigger than 8 bits
-	while (currSeg != NULL)
-	{
+	while (currSeg != NULL) {
 		processSeg(currSeg, descReport, report);
 		currSeg = currSeg->next;
 	}
-
 	
 
-	if (descReport->keyboardUpdated)
-	{
-		for (uint8_t c = 0; c < 255; c++)
-		{
-			if (BitPresent(descReport->KeyboardKeyMap, c) && !BitPresent(descReport->oldKeyboardKeyMap, c))
-			{
-				if (MenuActive)
-					Menu_Press_Key(c);
-				else
-				{
-					DEBUG_OUT("\nSendn %x\n", c);
-					// Make
-					if (c <= 0x67)
-					{
-						SendKeyboard(HIDtoPS2_Make[c]);
-						RepeatKey = c;
-						SetRepeatState(1);
-					}
-					else if (c >= 0xE0 && c <= 0xE7)
-					{
-						SendKeyboard(ModtoPS2_MAKE[c - 0xE0]);
-					}
+	if (descReport->keyboardUpdated) {
+		for (uint8_t c = 0; c < 255; c++) {
+			if (BitPresent(descReport->KeyboardKeyMap, c) && !BitPresent(descReport->oldKeyboardKeyMap, c)) {
+				DEBUG_OUT("\nSendn %x\n", c);
+				// Make
+				if (c <= 0x67) {
+					SendKeyboard(HIDtoPS2_Make[c]);
+					RepeatKey = c;
+					SetRepeatState(1);
 				}
-			}
-			else if (!BitPresent(descReport->KeyboardKeyMap, c) && BitPresent(descReport->oldKeyboardKeyMap, c))
-			{
-				if (!MenuActive)
-				{
-					// break
-					if (c <= 0x67)
-					{
-						// if the key we just released is the one that's repeating then stop
-						if (c == RepeatKey)
-						{
-							RepeatKey = 0;
-							SetRepeatState(0);
-						}
-
-						// Pause has no break for some reason
-						if (c == 0x48)
-							continue;
-
-						SendKeyboard(HIDtoPS2_Break[c]);
+				else if (c >= 0xE0 && c <= 0xE7) {
+					SendKeyboard(ModtoPS2_MAKE[c - 0xE0]);
+				}
+			} else if (!BitPresent(descReport->KeyboardKeyMap, c) && BitPresent(descReport->oldKeyboardKeyMap, c)) {
+				// break
+				if (c <= 0x67) {
+					// if the key we just released is the one that's repeating then stop
+					if (c == RepeatKey) {
+						RepeatKey = 0;
+						SetRepeatState(0);
 					}
-					else if (c >= 0xE0 && c <= 0xE7)
-					{
-						SendKeyboard(ModtoPS2_BREAK[c - 0xE0]);
-					}
+
+					// Pause has no break for some reason
+					if (c == 0x48)
+						continue;
+
+					SendKeyboard(HIDtoPS2_Break[c]);
+				} else if (c >= 0xE0 && c <= 0xE7) {
+					SendKeyboard(ModtoPS2_BREAK[c - 0xE0]);
 				}
 			}
 		}
@@ -508,62 +419,6 @@ void HandleReceived(uint8_t port)
 		if (ports[PORT_KEY].recvstate == R_IDLE)
 		{
 			ports[PORT_KEY].sendDisabled = 0;
-		}
-	}
-
-	else if (port == PORT_MOUSE)
-	{
-		switch (ports[PORT_KEY].recvstate)
-		{
-		case R_IDLE:
-
-			switch (ports[port].recvout)
-			{
-			case 0xE9:							// Status Request
-				SimonSaysSendMouse1(0xFA);		// ACK
-				SimonSaysSendMouse3(0b00100000, // Stream Mode, Scaling 1:1, Enabled, No buttons pressed
-									0x02,		// Resolution 4 counts/mm
-									100);		// Sample rate 100/sec
-				break;
-
-			// ID
-			case 0xF2:
-				SimonSaysSendMouse1(0xFA); // ACK
-				SimonSaysSendMouse1(0x00); // Standard mouse
-				break;
-
-			// Reset
-			case 0xFF:
-				SimonSaysSendMouse1(0xFA); // ACK
-				SimonSaysSendMouse1(0xAA); // POST OK
-				SimonSaysSendMouse1(0x00); // Squeek Squeek I'm a mouse
-				break;
-
-			// unimplemented command
-			case 0xE6: // Set Scaling 1:1
-			case 0xE7: // Set Scaling 2:1
-			case 0xE8: // Set Resolution
-			case 0xEA: // Set Stream Mode
-			case 0xEB: // Read Data
-			case 0xEC: // Reset Wrap Mode
-			case 0xEE: // Set Wrap Mode
-			case 0xF0: // Remote Mode
-			case 0xF3: // Set Sample Rate
-			case 0xF4: // Enable Reporting
-			case 0xF5: // Disable Reporting
-			case 0xF6: // Set Defaults
-			case 0xFE: // Resend
-			default:   // argument from command?
-
-				SimonSaysSendMouse1(0xFA); // Just smile and nod
-				break;
-			}
-		}
-		// If we're not expecting more stuff,
-		// unlock the send buffer so main loop can send stuff again
-		if (ports[PORT_MOUSE].recvstate == R_IDLE)
-		{
-			ports[PORT_MOUSE].sendDisabled = 0;
 		}
 	}
 }

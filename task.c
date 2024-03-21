@@ -69,10 +69,10 @@ void InitSystem(void)
 	CfgFsys();      //CH559ʱ��ѡ������   
     mDelaymS(500);   
 
-    CH559GPIODrivCap(3, 1);
+    CH554GPIODrivCap(3, 1);
 
 #ifdef DEBUG
-    //CH559GPIOModeSelt(PORT_PIN_TEST_LED, 2, OFFSET_PIN_TEST_LED);
+    //CH554GPIOModeSelt(PORT_PIN_TEST_LED, 2, OFFSET_PIN_TEST_LED);
 
     //SET_GPIO_BIT(PIN_TEST_LED);
 #endif

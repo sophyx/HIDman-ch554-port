@@ -2,7 +2,7 @@
 #ifndef _MCU_H_
 #define _MCU_H_
 
-#include "ch559.h"
+#include "ch554.h"
 
 #define st(x)      do { x } while (__LINE__ == -1)
 

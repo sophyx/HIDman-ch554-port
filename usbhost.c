@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "type.h"
-#include "ch559.h"
+#include "ch554.h"
 #include "system.h"
 #include "defs.h"
 #include "usbdef.h"
