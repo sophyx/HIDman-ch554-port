@@ -92,12 +92,7 @@ bool ReadPS2Data(uint8_t port)
 	if (port == PORT_KEY)
 		return KEY_DATA;
 	else /*if (port == PORT_MOUSE)*/
-#if defined(BOARD_MICRO)
 		return MOUSE_DATA;
-#else
-		if (P4_IN &= 0b00001000) return 1;
-		else return 0;
-#endif
 }
 
 void SimonSaysSendKeyboard(const uint8_t *chunk)

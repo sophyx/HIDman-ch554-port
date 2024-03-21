@@ -3,55 +3,40 @@
 #include "ch554.h"
 #include "system.h"
 
-/*******************************************************************************
-* Function Name  : CfgFsys( )
-* Description    : CH559ʱ��ѡ������ú���,Ĭ��ʹ���ڲ�����12MHz�����������FREQ_SYS����
-                   ����PLL_CFG��CLOCK_CFG���õõ�����ʽ���£�
-                   Fsys = (Fosc * ( PLL_CFG & MASK_PLL_MULT ))/(CLOCK_CFG & MASK_SYS_CK_DIV);
-                   ����ʱ����Ҫ�Լ�����
-* Input          : None
-* Output         : None
-* Return         : None
-*******************************************************************************/ 
+
 void CfgFsys()	
 {
-	SAFE_MOD = 0x55;														   //������ȫģʽ
-	SAFE_MOD = 0xAA;												 
-//	CLOCK_CFG |= bOSC_EN_XT;												   //ʹ���ⲿ����										  
-//	CLOCK_CFG &= ~bOSC_EN_INT;												
-//	CLOCK_CFG &= ~MASK_SYS_CK_DIV;
-//	CLOCK_CFG |= 6; 														   //����ϵͳʱ��48MHz
-//	CLOCK_CFG |= 8; 														   //����ϵͳʱ��36MHz
-//	CLOCK_CFG |= 10;														   //����ϵͳʱ��28.8MHz
-//	CLOCK_CFG |= 12;														   //����ϵͳʱ��24MHz
-//	CLOCK_CFG |= 16;														   //����ϵͳʱ��18MHz	
+	UINT8 fsys_cfg;
 
-	CLOCK_CFG &= ~MASK_SYS_CK_DIV;
+#ifdef	FREQ_SYS
+#if		FREQ_SYS >= 3000000
+		fsys_cfg = 2
+#endif
+#if		FREQ_SYS == 6000000
+		fsys_cfg = 3
+#endif
+#if		FREQ_SYS == 12000000
+		fsys_cfg = 4
+#endif
+#if		FREQ_SYS == 16000000
+		fsys_cfg = 5
+#endif
+#if		FREQ_SYS == 24000000
+		fsys_cfg = 6
+#endif
+#endif
 
-#if 1
-	//����ϵͳʱ��48MHz
-	CLOCK_CFG |= 6; 															  
-	PLL_CFG = (24 << 0) | (6 << 5);
-#else
-	//����ϵͳʱ��56MHz
-	CLOCK_CFG |= 6; 															  
-	PLL_CFG = (28 << 0) | (7 << 5);
-#endif	
+	SAFE_MOD = 0x55;
+	SAFE_MOD = 0xAA;
+
+	CLOCK_CFG &= ~MASK_SYS_CK_SEL;
+	CLOCK_CFG |= fsys_cfg;
 	
-	SAFE_MOD = 0xFF;														   //�رհ�ȫģʽ  
-//	����޸���Ƶ��Ҫͬʱ�޸�FREQ_SYS������������ʱ������׼
+	SAFE_MOD = 0xFF;
 }
 
 
-/*******************************************************************************
-* Function Name  : mDelayus(UNIT16 n)
-* Description    : us��ʱ����
-* Input          : UNIT16 n
-* Output         : None
-* Return         : None
-*******************************************************************************/ 
-void mDelayuS( UINT16 n )  // ��uSΪ��λ��ʱ
-{
+void mDelayuS(UINT16 n) {
 	while ( n ) {  // total = 12~13 Fsys cycles, 1uS @Fsys=12MHz
 		++ SAFE_MOD;  // 2 Fsys cycles, for higher Fsys, add operation here
 #ifdef	FREQ_SYS
@@ -73,72 +58,16 @@ void mDelayuS( UINT16 n )  // ��uSΪ��λ��ʱ
 #if		FREQ_SYS >= 24000000
 		++ SAFE_MOD;
 #endif
-#if		FREQ_SYS >= 26000000
-		++ SAFE_MOD;
-#endif
-#if		FREQ_SYS >= 28000000
-		++ SAFE_MOD;
-#endif
-#if		FREQ_SYS >= 30000000
-		++ SAFE_MOD;
-#endif
-#if		FREQ_SYS >= 32000000
-		++ SAFE_MOD;
-#endif
-#if		FREQ_SYS >= 34000000
-		++ SAFE_MOD;
-#endif
-#if		FREQ_SYS >= 36000000
-		++ SAFE_MOD;
-#endif
-#if		FREQ_SYS >= 38000000
-		++ SAFE_MOD;
-#endif
-#if		FREQ_SYS >= 40000000
-		++ SAFE_MOD;
-#endif
-#if		FREQ_SYS >= 42000000
-		++ SAFE_MOD;
-#endif
-#if		FREQ_SYS >= 44000000
-		++ SAFE_MOD;
-#endif
-#if		FREQ_SYS >= 46000000
-		++ SAFE_MOD;
-#endif
-#if		FREQ_SYS >= 48000000
-		++ SAFE_MOD;
-#endif
-#if		FREQ_SYS >= 50000000
-		++ SAFE_MOD;
-#endif
-#if		FREQ_SYS >= 52000000
-		++ SAFE_MOD;
-#endif
-#if		FREQ_SYS >= 54000000
-		++ SAFE_MOD;
-#endif
-#if		FREQ_SYS >= 56000000
-		++ SAFE_MOD;
-#endif
 #endif
 		-- n;
 	}
 }
 
 
-/*******************************************************************************
-* Function Name  : mDelayms(UNIT16 n)
-* Description    : ms��ʱ����
-* Input          : UNIT16 n
-* Output         : None
-* Return         : None
-*******************************************************************************/
-void	mDelaymS( UINT16 n )                                                  // ��mSΪ��λ��ʱ
+void mDelaymS(UINT16 n)
 {
-	while ( n ) 
-	{
-		mDelayuS( 1000 );
+	while (n) {
+		mDelayuS(1000);
 		-- n;
 	}
 }

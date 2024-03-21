@@ -42,17 +42,6 @@ void mTimer0Interrupt(void) __interrupt(1)
 		RepeatTimer();
 		repeatDiv = 0;
 
-		if (!(P4_IN & (1 << 6)))
-		{
-			ResetCounter++;
-			if (ResetCounter > 10000)
-			{
-				runBootloader();
-			}
-		}
-		else
-			ResetCounter = 0;
-
 		// turn current LED on if we've seen no activity in a while
 		if (LEDDelay)
 			LEDDelay--;
@@ -111,11 +100,6 @@ void main()
 	PORT_CFG |= bP3_OC;	 // open collector
 	P3_PU = 0x00;		 // no pullups
 	P3 = 0b11100010;	 // default pin states
-
-	//port4 setup
-	P4_DIR = 0b00010100; //4.0 is RXD, 4.2 is Blue LED, 4.3 is MOUSE DATA (actually input, since we're faking open drain), 4.4 is TXD, 4.6 is SWITCH
-	P4_PU = 0b01000000;	 // pullup on switch
-	P4_OUT = 0b00000100; //LEDs off (i.e. HIGH), MOUSE DATA low (since it's switched by toggling input on and off, i.e. faking open drain)
 
 	// timer0 setup
 	TMOD = (TMOD & 0xf0) | 0x02; // mode 1 (8bit auto reload)
