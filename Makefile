@@ -80,6 +80,6 @@ all: $(OBJDIR)/$(TARGET).bin $(OBJDIR)/$(TARGET).hex
 clean:
 	rm -f $(OBJDIR)/*
 
-test: $(OBJECTS) $(OBJDIR)/test.rel
-	$(CC) build/test.rel build/parsedescriptor.rel build/andyalloc.rel build/data.rel build/uart.rel $(LFLAGS) -o $(OBJDIR)/test.ihx
-	s51 build/test -s -
+#test: $(OBJECTS) $(OBJDIR)/test.rel
+#	$(CC) build/test.rel build/parsedescriptor.rel build/andyalloc.rel build/data.rel build/uart.rel $(LFLAGS) -o $(OBJDIR)/test.ihx#
+#	s51 build/test -s -

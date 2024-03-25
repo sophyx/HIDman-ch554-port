@@ -53,7 +53,7 @@ void mTimer2Interrupt(void) __interrupt(5)
 
 static void InitTimer2(void)
 {
-	mTimer2Clk12DivFsys( ); 												//ʱ��ѡ��Fsys��ʱ����ʽ
+	mTimer2Clk12DivFsys(); 												//ʱ��ѡ��Fsys��ʱ����ʽ
 	mTimer2Setup(0);														//��ʱ��������ʾ
 	mTimer2Init(FREQ_SYS / 12 * 5 / 1000);									//��ʱ������ֵ
 	

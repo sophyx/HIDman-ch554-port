@@ -14,14 +14,10 @@ SBIT(KEY_CLOCK, 0x90, 5);
 SBIT(KEY_DATA, 0x90, 3);
 
 __xdata uint8_t repeatDiv = 0;
-uint16_t ResetCounter;
-
-// green LED on by default
-uint8_t LEDStatus = 0x02;
 
 void mTimer2Interrupt(void) __interrupt(5);
 
-// timer should run at 48MHz divided by (0xFFFF - (TH0TL0))
+// timer should run at 24MHz divided by 4*(0xFF - TH0)
 // i.e. 60khz
 void mTimer0Interrupt(void) __interrupt(1)
 {
@@ -39,14 +35,7 @@ void mTimer0Interrupt(void) __interrupt(1)
 		if (LEDDelay)
 			LEDDelay--;
 		else {
-			if (LEDStatus & 0x01)
-				SetPWM1Dat(0x18);
-			if (LEDStatus & 0x02)
-				SetPWM2Dat(0x30);
-			if (LEDStatus & 0x04) {
-				T3_FIFO_L = 0xFF; // blue needs to be brighter
-				T3_FIFO_H = 0;
-			}
+			SetPWM2Dat(0x30);
 		}
 	}
 }
@@ -63,26 +52,19 @@ void main()
 	SetPWMClk(12); //Set the clock division factor of PWM1&2 to 12
 	InitPWM1(1);   //PWM1 initialization, active low
 	InitPWM2(1);   //PWM2 initialization, active high
-	InitPWM3(1);
 	SetPWMCycle(0xff);
 	SetPWM1Dat(0x00);
 	SetPWM2Dat(0x00);
 
-	T3_CK_SE_L = 0x20;
-	T3_CK_SE_H = 0;
-	T3_END_H = 0;
-	T3_END_L = 255;
-	T3_FIFO_L = 0;
-	T3_FIFO_H = 0;
-
 	//port1 setup
 	P1_MOD_OC = 0b11101010; // set output mode for output pins to open-drain
-	P1_DIR_PU = 0x00;  // no pull-ups and the other pins input
+	P1_DIR_PU = 0x00;  // no pull-ups on output pins and all other pins input
 	P1 = 0b11111010;	 // default pin states
 
 	// timer0 setup
-	TMOD = (TMOD & 0xf0) | 0x02; // mode 1 (8bit auto reload)
-	TH0 = 0xBD;					 // 60khz
+	TMOD = (TMOD & 0xF0) | 0x02; // mode 2 (8bit auto reload)
+	T2MOD = (T2MOD & 0b01101111) | 0b00010000; // set timer0 to faster clock and faster clock to fsys/4
+	TH0 = 0x9B;					 // 60khz, 24MHz/(4*(0xFF - TH0))
 
 	TR0 = 1; // start timer0
 	ET0 = 1; //enable timer0 interrupt;

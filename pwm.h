@@ -3,7 +3,6 @@
 
 void InitPWM1(UINT8 polar);
 void InitPWM2(UINT8 polar);
-void InitPWM3(UINT8 polar);
 #define SetPWMClk(CK_SE) (PWM_CK_SE = CK_SE)   //Frequency division, default clock Fsys
 #define SetPWMCycle(Cycle) (PWM_CYCLE = Cycle) //Set the cycle period
 #define SetPWM1Dat(dat) (PWM_DATA = dat)	   //Set PWM output duty cycle

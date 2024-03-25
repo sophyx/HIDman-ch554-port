@@ -67,20 +67,3 @@ void InitPWM2(UINT8 polar)
 		PWM_CTRL &= ~bPWM2_POLAR; //High level active
 	}
 }
-
-/************************************************* ******************************
-* Function Name: InitPWM2(UINT8 polar)
-* Description: PWM initialization function
-* Input: polar=0 selects the default low level, high level output is valid;
-                   polar=1 selects the default high level, the low level output is valid;
-* Output: None
-* Return: None
-************************************************** *****************************/
-void InitPWM3(UINT8 polar)
-{
-	T3_CTRL &= ~bT3_CLR_ALL;
-	T3_SETUP |= bT3_EN_CK_SE;
-	T3_CTRL |= bT3_OUT_EN | bT3_CNT_EN | bT3_PWM_POLAR;
-
-	PIN_FUNC |= bTMR3_PIN_X;
-}
