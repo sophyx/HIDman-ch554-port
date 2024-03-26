@@ -53,6 +53,12 @@
 #define HID_SET_PROTOCOL        0x0B
 #endif
 
+/* HID Report Types */
+#define HID_REPORT_INPUT                0x01
+#define HID_REPORT_OUTPUT               0x02
+#define HID_REPORT_FEATURE              0x03
+
+
 /* Bit define for USB request type */
 #ifndef USB_REQ_TYP_MASK
 #define USB_REQ_TYP_IN          0x80            /* control IN, device to host */
@@ -145,6 +151,8 @@
 #define USB_ENDP_TYPE_BULK      0x02
 #define USB_ENDP_TYPE_INTER     0x03
 #endif
+
+#define USB_PROTOCOL_NONE               0x00
 
 /* HID Protocol Codes */
 #define HID_PROTOCOL_NONE               0x00

@@ -199,8 +199,6 @@ bool ParseReport(HID_REPORT_DESC *desc, uint32_t len, uint8_t *report)
 	uint32_t tmp;
 	SetPWM1Dat(0x00);
 	SetPWM2Dat(0x00);
-	T3_FIFO_L = 0;
-	T3_FIFO_H = 0;
 
 	LEDDelayMs = 33;
 
