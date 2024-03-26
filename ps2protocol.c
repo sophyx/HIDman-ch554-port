@@ -28,7 +28,7 @@ __xdata int16_t RepeatRate = -1000;
 
 __xdata char lastKeyboardHID[8];
 
-uint16_t LEDDelay = 0;
+uint8_t LEDDelayMs = 0;
 
 // runs in interupt to keep timings
 void RepeatTimer()
@@ -202,7 +202,7 @@ bool ParseReport(HID_REPORT_DESC *desc, uint32_t len, uint8_t *report)
 	T3_FIFO_L = 0;
 	T3_FIFO_H = 0;
 
-	LEDDelay = 250;
+	LEDDelayMs = 33;
 
 	if (desc->usesReports) {
 		// first byte of report will be the report number
@@ -371,6 +371,7 @@ void HandleReceived(uint8_t port)
 			case R_LEDS:
 				// TODO blinkenlights
 				SimonSaysSendKeyboard(KEY_ACK);
+				SetKeyboardLedStatusFromPS2(ports[PORT_KEY].recvout);
 				ports[PORT_KEY].recvstate = R_IDLE;
 				break;
 

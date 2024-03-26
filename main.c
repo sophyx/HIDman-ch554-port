@@ -8,6 +8,7 @@
 #include "ps2.h"
 #include "parsedescriptor.h"
 #include "pwm.h"
+#include "keyboardled.h"
 
 // Default pinouts (HIDman-AXD, HIDman-mini)
 SBIT(KEY_CLOCK, 0x90, 5);
@@ -26,17 +27,24 @@ void mTimer0Interrupt(void) __interrupt(1)
 
 	// now handle keyboard typematic repeat timers
 	// divide down to 15KHz to make maths easier
-	if (++repeatDiv == 4)
-	{
-		RepeatTimer();
+	if (++repeatDiv == 4) {
 		repeatDiv = 0;
+		RepeatTimer();
+	}
 
-		// turn current LED on if we've seen no activity in a while
-		if (LEDDelay)
-			LEDDelay--;
-		else {
-			SetPWM2Dat(0x30);
-		}
+	static uint8_t msDiv = 0;
+	if (++msDiv == 60) {
+		msDiv = 0;
+		EveryMillisecond();
+	}
+}
+
+void EveryMillisecond() {
+	// turn current LED on if we've seen no activity in a while
+	if (LEDDelayMs)
+		LEDDelayMs--;
+	else {
+		SetPWM2Dat(0x30);
 	}
 }
 

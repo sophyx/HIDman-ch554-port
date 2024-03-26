@@ -93,9 +93,9 @@ void ProcessUsbHostPort()
 
 
 
-void ProcessKeyboardLed()
+/*void ProcessKeyboardLed()
 {
-	/*if (!IsRecvBufferEmpty())
+	if (!IsRecvBufferEmpty())
 	{
 		UINT8 *packet = GetOutputBuffer();
 		UINT8 id = packet[0];
@@ -121,6 +121,6 @@ void ProcessKeyboardLed()
 		default:
 			break;
 		}
-	}*/
-}
+	}
+}*/
 
