@@ -5,13 +5,13 @@
 	I.e. buffers and bit-bang state machine
 */
 
+#include "ps2.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include "ch554.h"
 #include "usbhost.h"
-#include "ps2.h"
 #include "data.h"
 #include "ps2protocol.h"
 

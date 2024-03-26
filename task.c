@@ -1,20 +1,13 @@
-
+#include "task.h"
 #include <stdio.h>
 #include "type.h"
-
 #include "mcu.h"
 #include "system.h"
 #include "timer2.h"
-
 #include "usbhost.h"
 #include "keyboardled.h"
-
 #include "recvbuffer.h"
 #include "ps2protocol.h"
-
-
-#include "task.h"
-
 #include "trace.h"
 
 static UINT8 volatile s_5MsCounter = 0;

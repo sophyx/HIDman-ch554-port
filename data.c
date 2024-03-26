@@ -5,7 +5,7 @@
     Joystick mapping presets, Keyboard scancodes, HID->PS2 mappings, etc
 */
 
-
+#include "data.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>

@@ -1,5 +1,5 @@
-#include "type.h"
 #include "ch554.h"
+#include "type.h"
 
 /*
 __at (0x2446) UINT8XV  UEP4_1_MOD  ;   // endpoint 4/1 mode

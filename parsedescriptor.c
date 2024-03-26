@@ -1,17 +1,15 @@
+#include "parsedescriptor.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "type.h"
 #include "usbdef.h"
 #include "ch554.h"
-
 #include "defs.h"
-
 #include "usbhost.h"
 #include "ps2protocol.h"
 #include "data.h"
 #include "ps2.h"
-#include "parsedescriptor.h"
 #include "andyalloc.h"
 
 uint8_t JoyNum = 0;

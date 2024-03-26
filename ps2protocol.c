@@ -5,6 +5,7 @@
 	HID conversion, responding to host commands
 */
 
+#include "ps2protocol.h"
 #include <stdint.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -13,7 +14,6 @@
 #include "usbhost.h"
 #include "ps2.h"
 #include "data.h"
-#include "ps2protocol.h"
 #include "pwm.h"
 
 // repeatState -

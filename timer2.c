@@ -1,7 +1,6 @@
-
+#include "timer2.h"
 #include "type.h"
 #include "ch554.h"
-#include "timer2.h"
 
 /*******************************************************************************
 * Function Name  : mTimer2Setup(UINT8 T2Out)

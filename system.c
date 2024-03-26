@@ -1,36 +1,15 @@
-
+#include "system.h"
 #include "type.h"
 #include "ch554.h"
-#include "system.h"
 
 
 void CfgFsys()	
 {
-	UINT8 fsys_cfg;
-
-#ifdef	FREQ_SYS
-#if		FREQ_SYS >= 3000000
-		fsys_cfg = 2
-#endif
-#if		FREQ_SYS == 6000000
-		fsys_cfg = 3
-#endif
-#if		FREQ_SYS == 12000000
-		fsys_cfg = 4
-#endif
-#if		FREQ_SYS == 16000000
-		fsys_cfg = 5
-#endif
-#if		FREQ_SYS == 24000000
-		fsys_cfg = 6
-#endif
-#endif
-
 	SAFE_MOD = 0x55;
 	SAFE_MOD = 0xAA;
 
 	CLOCK_CFG &= ~MASK_SYS_CK_SEL;
-	CLOCK_CFG |= fsys_cfg;
+	CLOCK_CFG |= FSYS_CFG;
 	
 	SAFE_MOD = 0xFF;
 }

@@ -1,4 +1,4 @@
-
+#include "usbhost.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include "type.h"
@@ -6,7 +6,6 @@
 #include "system.h"
 #include "defs.h"
 #include "usbdef.h"
-#include "usbhost.h"
 #include "data.h"
 
 #include "keyboardled.h"
