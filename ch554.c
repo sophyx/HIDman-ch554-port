@@ -1,6 +1,7 @@
 #include "type.h"
 #include "ch554.h"
 
+/*
 __at (0x2446) UINT8XV  UEP4_1_MOD  ;   // endpoint 4/1 mode
 __at (0x2546) UINT8PV pUEP4_1_MOD  ;
 __at (0x2447) UINT8XV  UEP2_3_MOD  ;   // endpoint 2/3 mode
@@ -31,4 +32,4 @@ __at (0x2888) UINT8XV  LED_DMA_XH  ;   // aux buffer DMA address high byte, auto
 __at (0x2889) UINT8XV  LED_DMA_XL  ;   // aux buffer DMA address low byte, automatic increasing after DMA
 __at (0x2988) UINT8PV pLED_DMA_XH  ;
 __at (0x2989) UINT8PV pLED_DMA_XL  ;
-
+*/

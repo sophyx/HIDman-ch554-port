@@ -52,7 +52,6 @@ void main()
 	SetPWMClk(12); //Set the clock division factor of PWM1&2 to 12
 	InitPWM1(1);   //PWM1 initialization, active low
 	InitPWM2(1);   //PWM2 initialization, active high
-	SetPWMCycle(0xff);
 	SetPWM1Dat(0x00);
 	SetPWM2Dat(0x00);
 
@@ -63,14 +62,13 @@ void main()
 
 	// timer0 setup
 	TMOD = (TMOD & 0xF0) | 0x02; // mode 2 (8bit auto reload)
-	T2MOD = (T2MOD & 0b01101111) | 0b00010000; // set timer0 to faster clock and faster clock to fsys/4
+	T2MOD = (T2MOD & 0b01101111) | 0b00010000; // set timer0 to fast clock and fast clock to fsys/4
 	TH0 = 0x9B;					 // 60khz, 24MHz/(4*(0xFF - TH0))
 
 	TR0 = 1; // start timer0
 	ET0 = 1; //enable timer0 interrupt;
 	EA = 1;	 // enable all interrupts
 
-	memset(SendBuffer, 0, 255);
 	//SendKeyboardString("We are go\n");
 
 	while (1) {

@@ -196,6 +196,12 @@ typedef struct _USB_SETUP_REQ {
 
 typedef USB_SETUP_REQ __xdata *PXUSB_SETUP_REQ;
 
+typedef struct _DESCR_HEADER
+{
+	UINT8 bDescLength;
+	UINT8 bDescriptorType;	
+} DESCR_HEADER;
+
 typedef struct _USB_DEVICE_DESCR {
     uint8_t bLength;
     uint8_t bDescriptorType;

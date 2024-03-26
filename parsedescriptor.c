@@ -69,13 +69,13 @@ BOOL ParseConfigDescriptor(USB_CFG_DESCR *pCfgDescr, UINT16 len, USB_DEVICE *pUs
 
 	while (index < totalLen)
 	{
-		pDescrHeader = (DESCR_HEADER *)pDescr;
+		pDescrHeader = (DESCR_HEADER*) pDescr;
 		descrType = pDescrHeader->bDescriptorType;
 
 		if (descrType == USB_DESCR_TYP_INTERF)
 		{
 			//interface descriptor
-			pItfDescr = (USB_ITF_DESCR *)pDescr;
+			pItfDescr = (USB_ITF_DESCR*) pDescr;
 			if (pItfDescr->bInterfaceNumber >= pUsbDevice->InterfaceNum)
 			{
 				break;

@@ -9,7 +9,6 @@ TARGET = hidman_ch554
 
 OBJECTS = \
 $(OBJDIR)/ch554.rel \
-$(OBJDIR)/gpio.rel \
 $(OBJDIR)/keyboardled.rel \
 $(OBJDIR)/main.rel \
 $(OBJDIR)/parsedescriptor.rel \
@@ -22,8 +21,7 @@ $(OBJDIR)/data.rel \
 $(OBJDIR)/ps2protocol.rel \
 $(OBJDIR)/ps2.rel \
 $(OBJDIR)/andyalloc.rel \
-$(OBJDIR)/pwm.rel \
-$(OBJDIR)/mouse.rel
+$(OBJDIR)/pwm.rel
 
 ifndef FREQ_SYS
 FREQ_SYS = 24000000

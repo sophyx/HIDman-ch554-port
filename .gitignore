@@ -8,8 +8,10 @@
 *.sym
 build/
 .vscode/
+.cache/
 
 workspace.code-workspace
+compile_commands.json
 
 # Temporary files
 *.000
